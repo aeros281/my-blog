@@ -5,7 +5,7 @@ import typoStyle from '../styles/typography.module.scss'
 import style from './layout.module.scss'
 
 export const BLOG_NAME = 'My Dragon is Angry'
-export const AVATAR_SRC = "images/alencia_epic7.jpg"
+export const AVATAR_SRC = "/images/alencia_epic7.jpg"
 
 export default function Layout({ children }) {
     return (
