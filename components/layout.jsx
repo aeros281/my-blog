@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Link from 'next/link'
 
 import utilStyle from '../styles/util.module.scss'
 import typoStyle from '../styles/typography.module.scss'
@@ -7,7 +8,7 @@ import style from './layout.module.scss'
 export const BLOG_NAME = 'My Dragon is Angry'
 export const AVATAR_SRC = "/images/alencia_epic7.jpg"
 
-export default function Layout({ children }) {
+export default function Layout({ children, home }) {
     return (
         <div className={style.container} >
             <Head>
@@ -22,6 +23,11 @@ export default function Layout({ children }) {
                 <img className={`${style.headerImage} + ${utilStyle.borderCircle}`} src={AVATAR_SRC} />
             </header>
             <section>{ children }</section> 
+            {home || (
+               <Link href={'/'} >
+                   <a>Back to home</a>
+               </Link>
+            )}
         </div>
     )
 }

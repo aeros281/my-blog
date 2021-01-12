@@ -10,11 +10,12 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - /var/lib/postgresql/data:/var/lib/postgresql/data
-    ports:
-     - "8001:5432"
 
   app:
-    image: my_blog
+    container_name: my_blog
+    build:
+      context: ./
+      dockerfile: Dockerfile
     volumes:
       - ./:/app
       - /app/node_modules

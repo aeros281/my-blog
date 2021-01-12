@@ -8,7 +8,7 @@ import { getAllPosts } from '../lib/blog'
 
 export default function Home({ wreckedCounter, posts }) {
   return (
-    <Layout>
+    <Layout home>
       <Head>
         <title>{BLOG_NAME}</title>
       </Head>
