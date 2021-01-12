@@ -1,6 +1,8 @@
 import Head from 'next/head'
 
 import Layout from '../../components/layout'
+import Date from '../../components/core/date'
+
 import typo from '../../styles/typography.module.scss'
 import articleStyle from '../../styles/article.module.scss'
 
@@ -15,7 +17,7 @@ export default function Post({ postData }) {
             <article>
                 <h1 className={typo.headingXl}>{postData.title}</h1>
                 <div className={typo.lightText}>
-                    {'<Created Date>'}
+                    <Date dateString={postData.created_at} />
                 </div>
                 <div className={articleStyle.articleContent} dangerouslySetInnerHTML={{ __html: postData.htmlContent }} />
             </article>
