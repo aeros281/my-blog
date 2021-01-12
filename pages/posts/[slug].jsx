@@ -2,8 +2,9 @@ import Head from 'next/head'
 
 import Layout from '../../components/layout'
 import typo from '../../styles/typography.module.scss'
+import articleStyle from '../../styles/article.module.scss'
 
-import { getAllPostSlugs, getPostData } from '../../lib/blog'
+import { convertRemarkToHtml, getAllPostSlugs, getPostData } from '../../lib/blog'
 
 export default function Post({ postData }) {
     return (
@@ -16,7 +17,7 @@ export default function Post({ postData }) {
                 <div className={typo.lightText}>
                     {'<Created Date>'}
                 </div>
-                <div dangerouslySetInnerHTML={{ __html: postData.markdown_content }} />
+                <div className={articleStyle.articleContent} dangerouslySetInnerHTML={{ __html: postData.htmlContent }} />
             </article>
         </Layout>
     )
@@ -36,6 +37,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
     const postData = await getPostData(params.slug);
+    postData.htmlContent = await convertRemarkToHtml(postData.markdown_content);
     return {
         props: {
             postData,
