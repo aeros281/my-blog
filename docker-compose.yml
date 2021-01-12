@@ -1,0 +1,24 @@
+version: "3.7"
+
+services:
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: example
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - /var/lib/postgresql/data:/var/lib/postgresql/data
+    ports:
+     - "8001:5432"
+
+  app:
+    image: my_blog
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    restart: always
+    ports:
+      - "3000:3000"
+  
