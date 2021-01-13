@@ -1,18 +1,22 @@
-import Head from 'next/head'
+import Head from 'next/head';
 
-import { GetStaticPaths, GetStaticProps } from 'next'
+import { GetStaticPaths, GetStaticProps } from 'next';
 
-import Layout from '@components/layout'
-import Date from '@components/core/date'
+import Layout from '@components/layout';
+import Date from '@components/core/date';
 
-import { convertRemarkToHtml, getAllPostSlugs, getPostData } from '@lib/blog'
+import { convertRemarkToHtml, getAllPostSlugs, getPostData, PostDataResult } from '@lib/blog';
 
-import typo from '@styles/typography.module.scss'
-import articleStyle from '@styles/article.module.scss'
+import typo from '@styles/typography.module.scss';
+import articleStyle from '@styles/article.module.scss';
+import { ParsedUrlQuery } from 'querystring';
 
-export default function Post({ postData }) {
+interface StaticProps { postData: PostDataResult }
+interface StaticPropsParams extends ParsedUrlQuery { slug: string }
+
+export default function Post({ postData }: { postData: PostDataResult }): React.ReactNode {
     return (
-        <Layout>
+        <Layout home={true} >
             <Head>
                 <title>{postData.title}</title>
             </Head>
@@ -24,10 +28,10 @@ export default function Post({ postData }) {
                 <div className={articleStyle.articleContent} dangerouslySetInnerHTML={{ __html: postData.htmlContent }} />
             </article>
         </Layout>
-    )
+    );
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths<StaticPropsParams> = async () => {
     const paths = (await getAllPostSlugs()).map(({ slug }) => ({
         params: {
             slug,
@@ -37,9 +41,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
         paths,
         fallback: false,
     };
-}
+};
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getStaticProps: GetStaticProps<StaticProps, StaticPropsParams> = async ({ params }) => {
     const postData = await getPostData(params.slug);
     postData.htmlContent = await convertRemarkToHtml(postData.markdown_content);
     return {
@@ -47,4 +51,4 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
             postData,
         }
     };
-}
+};
