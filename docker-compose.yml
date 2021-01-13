@@ -26,11 +26,22 @@ services:
     <<: *common-props
     entrypoint: npm
 
-  app:
+  dev:
     <<: *common-props
+    depends_on:
+      - db
     ports:
       - "3000:3000"
     command: npm run dev
+
+  prod:
+    build:
+      context: ./
+      network: my-blog_default
+    depends_on:
+      - db
+    ports:
+      - "3001:3000"
   
 volumes:
   node_modules:
