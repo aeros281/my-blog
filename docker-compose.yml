@@ -1,5 +1,14 @@
 version: "3.7"
 
+x-common-props: &common-props
+  build:
+    context: ./
+    target: base
+  working_dir: /base
+  volumes:
+    - ./:/base
+    - node_modules:/base/node_modules
+
 services:
 
   db:
@@ -10,16 +19,18 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - /var/lib/postgresql/data:/var/lib/postgresql/data
+    ports:
+      - "8001:5432"
+    
+  npm:
+    <<: *common-props
+    entrypoint: npm
 
   app:
-    container_name: my_blog
-    build:
-      context: ./
-      dockerfile: Dockerfile
-    volumes:
-      - ./:/app
-      - /app/node_modules
-    restart: always
+    <<: *common-props
     ports:
       - "3000:3000"
+    command: npm run dev
   
+volumes:
+  node_modules:
