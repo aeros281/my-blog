@@ -31,12 +31,10 @@ export default function Home({ wreckedCounter, posts }) {
 
 export const getStaticProps: GetStaticProps = async () => {
   const currentTime = new Date();
-  const secondPassed = currentTime.getSeconds() + (60 * currentTime.getMinutes()) + (3600 * currentTime.getHours());
 
   const posts = await getAllPosts();
   return {
     props: {
-      wreckedCounter: secondPassed,
       posts: posts,
     },
     revalidate: 1,
