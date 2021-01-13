@@ -1,12 +1,14 @@
 import Head from 'next/head'
 
-import Layout from '../../components/layout'
-import Date from '../../components/core/date'
+import { GetStaticPaths, GetStaticProps } from 'next'
 
-import typo from '../../styles/typography.module.scss'
-import articleStyle from '../../styles/article.module.scss'
+import Layout from '@components/layout'
+import Date from '@components/core/date'
 
-import { convertRemarkToHtml, getAllPostSlugs, getPostData } from '../../lib/blog'
+import { convertRemarkToHtml, getAllPostSlugs, getPostData } from '@lib/blog'
+
+import typo from '@styles/typography.module.scss'
+import articleStyle from '@styles/article.module.scss'
 
 export default function Post({ postData }) {
     return (
@@ -25,7 +27,7 @@ export default function Post({ postData }) {
     )
 }
 
-export async function getStaticPaths() {
+export const getStaticPaths: GetStaticPaths = async () => {
     const paths = (await getAllPostSlugs()).map(({ slug }) => ({
         params: {
             slug,
@@ -37,7 +39,7 @@ export async function getStaticPaths() {
     };
 }
 
-export async function getStaticProps({ params }) {
+export const getStaticProps: GetStaticProps = async ({ params }) => {
     const postData = await getPostData(params.slug);
     postData.htmlContent = await convertRemarkToHtml(postData.markdown_content);
     return {
