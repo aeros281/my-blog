@@ -5,9 +5,26 @@
         "node": true
     },
     "extends": [
-        "eslint:recommended",
-        "plugin:react/recommended",
-        "plugin:@typescript-eslint/recommended"
+        "eslint:recommended"
+    ],
+    "overrides": [
+        {
+            "files": ["**/*.ts", "**/*.tsx"],
+            "settings": { "react": { "version": "detect"}},
+            "extends": [
+                "eslint:recommended",
+                "plugin:@typescript-eslint/recommended", // TypeScript rules
+                "plugin:react/recommended", // React rules
+                "plugin:react-hooks/recommended", // React hooks rules
+                "plugin:jsx-a11y/recommended" // Accessibility rules
+            ],
+            "rules": {
+                "react/prop-types": "off",
+                "react/react-in-jsx-scope": "off",
+                "jsx-a11y/anchor-is-valid": "off"
+
+            }
+        }
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {

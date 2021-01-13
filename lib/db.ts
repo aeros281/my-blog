@@ -8,9 +8,9 @@ const pool = new Pool({
     port: parseInt(process.env.DB_PORT, 10),
 });
 
-pool.on('error', (err, client) => {
+pool.on('error', (err) => {
     console.error('Unexpected error on idle client', err);
     process.exit(-1);
-})
+});
 
 export default pool;
