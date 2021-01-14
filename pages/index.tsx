@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import { GetStaticProps } from 'next';
 
-import Layout, { BLOG_NAME } from '@components/layout';
+import { BLOG_NAME, TwoColLayout as Layout } from '@components/layout';
 import { getAllPosts, GetPostResult } from '@lib/blog';
 import typo from '@styles/typography.module.scss';
 

@@ -2,7 +2,7 @@ import Head from 'next/head';
 
 import { GetStaticPaths, GetStaticProps } from 'next';
 
-import Layout from '@components/layout';
+import { TwoColLayout as Layout } from '@components/layout';
 import Date from '@components/core/date';
 
 import { convertRemarkToHtml, getAllPostSlugs, getPostData, PostDataResult } from '@lib/blog';
