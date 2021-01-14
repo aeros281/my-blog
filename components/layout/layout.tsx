@@ -1,19 +1,14 @@
 import Head from 'next/head';
 import Link from 'next/link';
 
-import utilStyle from '../styles/util.module.scss';
-import typoStyle from '../styles/typography.module.scss';
+import utilStyle from '@styles/util.module.scss';
+import typoStyle from '@styles/typography.module.scss';
+
 import style from './layout.module.scss';
+import { BLOG_NAME, AVATAR_SRC } from './const';
+import { LayoutProps } from './interfaces';
 
-export const BLOG_NAME = 'My Dragon is Angry';
-export const AVATAR_SRC = '/images/alencia_epic7.jpg';
-
-interface LayoutProps {
-    children: React.ReactNode;
-    home?: boolean;
-}
-
-export default function Layout({ children, home = false }: LayoutProps): React.ReactElement<LayoutProps> {
+export const Layout: React.FC<LayoutProps> = ({ children, home = false }) => {
     return (
         <div className={style.container} >
             <Head>
@@ -24,7 +19,11 @@ export default function Layout({ children, home = false }: LayoutProps): React.R
                 />
             </Head>
             <header className={style.blogHeader}>
-                <h1 className={typoStyle.heading2Xl}>{BLOG_NAME}</h1>
+                <h1 className={typoStyle.heading2Xl}>
+                    <Link href={'/'} >
+                        <a>{BLOG_NAME}</a>
+                    </Link>
+                </h1>
                 <img className={`${style.headerImage} + ${utilStyle.borderCircle}`} src={AVATAR_SRC} alt="User Avatar" />
             </header>
             <section>{ children }</section> 
