@@ -3,8 +3,8 @@ CREATE TABLE public.users
     id SERIAL,
     email character varying(50) NOT NULL,
     passhash character varying(255) NOT NULL,
-    created_at date NOT NULL DEFAULT CURRENT_DATE,
-    updated_at date NOT NULL DEFAULT CURRENT_DATE,
+    created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT user_id_pk PRIMARY KEY (id)
 );
 
@@ -19,8 +19,8 @@ CREATE TABLE public.posts
     title character varying(100) NOT NULL,
     published boolean NOT NULL,
 	markdown_content TEXT NOT NULL,
-    created_at date NOT NULL DEFAULT CURRENT_DATE,
-    updated_at date NOT NULL DEFAULT CURRENT_DATE,
+    created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT post_id_pk PRIMARY KEY (id),
     CONSTRAINT post_user_fk FOREIGN KEY (user_id)
         REFERENCES public.users (id) MATCH SIMPLE

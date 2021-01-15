@@ -34,8 +34,8 @@ export default function Post({ postData }: { postData: PostDataResult }): React.
             </Head>
             <article>
                 <h1 className={typo.headingXl}>{postData.title}</h1>
-                <div className={typo.lightText}>
-                    <Date dateString={postData.created_at} />
+                <div className={`${typo.lightText} + ${typo.small}`}>
+                    Created at <Date dateString={postData.created_at} />
                 </div>
                 <div className={articleStyle.articleContent} dangerouslySetInnerHTML={{ __html: postData.htmlContent }} />
             </article>
