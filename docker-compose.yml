@@ -38,6 +38,8 @@ services:
     build:
       context: ./
       network: my-blog_default
+      args:
+      - SHARP_URL=${SHARP_URL}
     depends_on:
       - db
     ports:
