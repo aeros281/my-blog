@@ -4,7 +4,9 @@ interface DateProps {
     dateString: string;
 }
 
-export default function Date({ dateString }: DateProps): React.ReactElement<DateProps> {
+const Date: React.FC<DateProps> = ({ dateString }) => {
     const date = parseISO(dateString);
     return <time dateTime={dateString}>{format(date, 'HH:mm:ss - LLLL d, yyyy')}</time>;
-}
+};
+
+export default Date;

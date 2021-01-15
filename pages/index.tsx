@@ -6,6 +6,7 @@ import { GetStaticProps } from 'next';
 import { BLOG_NAME, TwoColLayout as Layout } from '@components/layout';
 import { getAllPosts, GetPostResult } from '@lib/blog';
 import typo from '@styles/typography.module.scss';
+import Date from '@components/core/date';
 
 interface HomeProps { posts: GetPostResult[] }
 interface StaticProps { posts: GetPostResult[] }
@@ -18,11 +19,16 @@ export default function Home({ posts }: HomeProps): React.ReactElement {
             </Head>
             <section>
                 <h2 className={typo.headingLg}>Blog</h2>
-                <ul>
+                <ul className={typo.list}>
                     {posts.map(post => (
-                        <li key={post.id}>
+                        <li key={post.id} className={typo.listItem}>
                             <Link href={`/posts/${post.slug}`}>
-                                <a>{post.title}</a>
+                                <a>
+                                    {post.title}
+                                    <div className={`${typo.small} ${typo.lightText}`} >
+                                        <Date dateString={post.created_at} />
+                                    </div>
+                                </a>
                             </Link>
                         </li>
                     ))}

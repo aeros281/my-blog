@@ -9,7 +9,7 @@ const POST_GET_LIMIT = {
 };
 
 const POST_GET_ALL = {
-    text: `SELECT id, slug, title FROM posts WHERE published=true
+    text: `SELECT id, slug, title, to_json(created_at) as created_at_text, created_at FROM posts WHERE published=true
            ORDER BY created_at DESC LIMIT $1`
 };
 const POST_GET_ALL_SLUG = { text: 'SELECT slug FROM posts WHERE published=true ORDER BY created_at DESC LIMIT $1' };
@@ -19,17 +19,17 @@ export interface GetPostResult {
     id: number;
     slug: string;
     title: string;
+    created_at: string;
 }
 
 export interface PostDataResult extends GetPostResult {
     markdown_content: string;
     created_at: string;
-    htmlContent?: string;
 }
 
 export async function getAllPosts(limit: number = POST_GET_LIMIT.home): Promise<GetPostResult[]> {
     const { rows } = await pool.query(POST_GET_ALL, [limit]);
-    return rows;
+    return rows.map(item => Object.assign(item, { created_at: item.created_at_text }));
 }
 
 export async function getAllPostSlugs(limit: number = POST_GET_LIMIT.slugStaticPath): Promise<{ slug: string }[]> {

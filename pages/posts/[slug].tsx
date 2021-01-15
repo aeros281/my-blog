@@ -9,7 +9,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { TwoColLayout as Layout } from '@components/layout';
 import Date from '@components/core/date';
 
-import { convertRemarkToHtml, getAllPostSlugs, getPostData, PostDataResult } from '@lib/blog';
+import { getAllPostSlugs, getPostData, PostDataResult } from '@lib/blog';
 
 import typo from '@styles/typography.module.scss';
 import articleStyle from '@styles/article.module.scss';
@@ -70,7 +70,6 @@ export const getStaticPaths: GetStaticPaths<StaticPropsParams> = async () => {
 
 export const getStaticProps: GetStaticProps<StaticProps, StaticPropsParams> = async ({ params }) => {
     const postData = await getPostData(params.slug);
-    postData.htmlContent = await convertRemarkToHtml(postData.markdown_content);
     return {
         props: {
             postData,
