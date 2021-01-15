@@ -10,6 +10,8 @@ $blog-image-mobile-size: 2rem;
 
 $page-spacing: 50px;
 
+$light-font-color: #999;
+
 @mixin avatar-shape($size) {
     width: $size;
     height: $size;
@@ -50,7 +52,7 @@ $page-spacing: 50px;
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
-    color: #999;
+    color: $light-font-color;
 }
 
 .content {
@@ -58,7 +60,7 @@ $page-spacing: 50px;
     width: 100%;
     padding: $page-spacing;
     background: rgb(248, 248, 248);
-    min-height: calc(100vh - 150px);
+    min-height: calc(100vh - #{$sidebar-mobile-max-height});
     word-wrap: word;
 }
 
