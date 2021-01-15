@@ -1,7 +1,9 @@
+$background-color: #f8f8f8;
+
 $sidebar-width: 250px;
 $content-width: 458px;
 $breakpoint-mobile: $sidebar-width + $content-width;
-$sidebar-mobile-max-height: 100px;
+$sidebar-mobile-max-height: 150px;
 
 $blog-image-desktop-size: 6rem;
 $blog-image-mobile-size: 2rem;
@@ -13,13 +15,23 @@ $page-spacing: 50px;
     height: $size;
 }
 
+@mixin box-shadow() {
+    box-shadow:
+    0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.048),
+    0 12.5px 10px rgba(0, 0, 0, 0.06),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.072),
+    0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+    0 100px 80px rgba(0, 0, 0, 0.12);
+}
+
 .pageWrapper {
     display: flex;
     flex-flow: row nowrap;
     min-height: 100vh;
     width: 100%;
     justify-content: center;
-    background: black;
+    background: $background-color;
 }
 
 .container {
@@ -27,17 +39,27 @@ $page-spacing: 50px;
     display: flex;
     flex-flow: row wrap;
     width: 100%;
-    max-width: 1000px;
+    max-width: 1200px;
     background: white;
+    @include box-shadow();
 }
 
 .sidebar {
     flex: 1 0 $sidebar-width;
+    background: white;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    color: #999;
 }
 
 .content {
     flex: 8 1 $content-width;
+    width: 100%;
     padding: $page-spacing;
+    background: rgb(248, 248, 248);
+    min-height: calc(100vh - 150px);
+    word-wrap: word;
 }
 
 .blogHeader {
@@ -49,7 +71,7 @@ $page-spacing: 50px;
     width: 100%;
 
     .blogTitle {
-        flex: 1 0 100%;
+        flex: 1 0 auto;
         text-align: center;
     }
 
@@ -61,7 +83,12 @@ $page-spacing: 50px;
 @media (min-width: $breakpoint-mobile) {
     .sidebar {
         box-shadow: 2px 0 4px rgba(0, 0, 0, 0.4);
-        // background: rgb(212, 211, 214);
+
+        .navigator {
+            margin-top: 150px;
+            text-transform: uppercase;
+            text-align: center;
+        }
     }
 }
 
@@ -72,6 +99,23 @@ $page-spacing: 50px;
 
     .sidebar {
         height: $sidebar-mobile-max-height;
+        flex-flow: row wrap;
+        margin-bottom: 20px;
+        align-items: baseline;
+
+        .navigator {
+            display: flex;
+            flex-flow: row nowrap;
+            margin-left: $page-spacing;
+
+            & > li {
+                margin-right: 10px;
+            }
+
+            & > li + li {
+                margin-left: 10px;
+            }
+        }
     }
 
     .blogHeader {
