@@ -17,18 +17,43 @@ export const TwoColLayout: React.FC<LayoutProps> = ({ children }: LayoutProps) =
             <div className={style.pageWrapper}>
                 <div className={style.container}>
                     <div className={style.sidebar}>
-                        <header className={style.blogHeader}>
-                            <h1 className={`${typoStyle.headingXl} ${style.blogTitle}`}>
-                                <Link href={'/'} >
-                                    <a>{BLOG_NAME}</a>
-                                </Link>
-                            </h1>
-                            <img className={`${style.headerImage} + ${utilStyle.borderCircle}`} src={AVATAR_SRC} alt="User Avatar" />
-                        </header>
+                        <SideBarHeader title={BLOG_NAME} avatarSrc={AVATAR_SRC} />
+                        <BlogNavigator />
                     </div>
                     <div className={style.content}>{children}</div>
                 </div>
             </div>
         </>
+    );
+};
+
+const SideBarHeader: React.FC<{ title: string, avatarSrc: string }> = ({ title, avatarSrc }) => {
+    return (
+        <header className={style.blogHeader}>
+            <h1 className={`${typoStyle.headingXl} ${style.blogTitle}`}>
+                <Link href={'/'} >
+                    <a>{ title }</a>
+                </Link>
+            </h1>
+            <img className={`${style.headerImage} + ${utilStyle.borderCircle}`} src={avatarSrc} alt="User Avatar" />
+        </header>
+    );
+};
+
+const BlogNavigator: React.FC = () => {
+    const navigatorItems = [
+        { text: 'Home', href: '/' },
+        { text: 'Blog', href: '/posts' },
+        { text: 'About', href: '/about' },
+    ];
+
+    return (
+        <ul className={`${typoStyle.list} ${typoStyle.headingMd} ${style.navigator}`}>
+            {
+                navigatorItems.map(item => (
+                    <li className={typoStyle.listItem} key={item.text}>{item.text}</li>
+                ))
+            }
+        </ul>
     );
 };
