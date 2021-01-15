@@ -22,10 +22,9 @@ ENV NODE_ENV=production
 WORKDIR /app
 
 COPY --from=build /build/package*.json /build/.npmrc* ./
+COPY --from=build /build/.env* ./
 COPY --from=build /build/.next ./.next
 COPY --from=build /build/public ./public
-
-RUN cat .npmrc
 
 ARG SHARP_URL
 ENV SHARP_DIST_BASE_URL=${SHARP_URL}

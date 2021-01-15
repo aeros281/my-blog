@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 
 import { GetStaticPaths, GetStaticProps } from 'next';
 
@@ -15,6 +16,17 @@ interface StaticProps { postData: PostDataResult }
 interface StaticPropsParams extends ParsedUrlQuery { slug: string }
 
 export default function Post({ postData }: { postData: PostDataResult }): React.ReactNode {
+
+    const router = useRouter();
+
+    if (router.isFallback) {
+        return (
+            <Layout>
+                <div>Loading...</div>
+            </Layout>
+        );
+    }
+
     return (
         <Layout home={true} >
             <Head>
@@ -39,7 +51,7 @@ export const getStaticPaths: GetStaticPaths<StaticPropsParams> = async () => {
     }));
     return {
         paths,
-        fallback: false,
+        fallback: true,
     };
 };
 
@@ -49,6 +61,7 @@ export const getStaticProps: GetStaticProps<StaticProps, StaticPropsParams> = as
     return {
         props: {
             postData,
-        }
+        },
+        revalidate: 1,
     };
 };

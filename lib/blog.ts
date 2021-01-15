@@ -3,9 +3,9 @@ import html from 'remark-html';
 
 import pool from './db';
 
-const POST_GET_ALL = { text: 'SELECT id, slug, title FROM posts' };
-const POST_GET_ALL_SLUG = { text: 'SELECT slug FROM posts' };
-const POST_GET_BY_SLUG = { text: 'SELECT id, slug, title, markdown_content, to_json(created_at) as created_at FROM posts WHERE slug=$1', };
+const POST_GET_ALL = { text: 'SELECT id, slug, title FROM posts WHERE published=true' };
+const POST_GET_ALL_SLUG = { text: 'SELECT slug FROM posts WHERE published=true' };
+const POST_GET_BY_SLUG = { text: 'SELECT id, slug, title, markdown_content, to_json(created_at) as created_at FROM posts WHERE slug=$1 AND published=true' };
 
 export interface GetPostResult {
     id: number;
