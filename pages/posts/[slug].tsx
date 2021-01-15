@@ -3,6 +3,9 @@ import { useRouter } from 'next/router';
 
 import { GetStaticPaths, GetStaticProps } from 'next';
 
+import ReactMarkdownWithHtml from 'react-markdown/with-html';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+
 import { TwoColLayout as Layout } from '@components/layout';
 import Date from '@components/core/date';
 
@@ -27,6 +30,13 @@ export default function Post({ postData }: { postData: PostDataResult }): React.
         );
     }
 
+    const renderers = {
+        // eslint-disable-next-line react/display-name
+        code: ({language, value}) => {
+            return <SyntaxHighlighter language={language} >{value}</SyntaxHighlighter>;
+        }
+    };
+
     return (
         <Layout home={true} >
             <Head>
@@ -37,7 +47,10 @@ export default function Post({ postData }: { postData: PostDataResult }): React.
                 <div className={`${typo.lightText} + ${typo.small}`}>
                     Created at <Date dateString={postData.created_at} />
                 </div>
-                <div className={articleStyle.articleContent} dangerouslySetInnerHTML={{ __html: postData.htmlContent }} />
+                {/* <div className={articleStyle.articleContent} dangerouslySetInnerHTML={{ __html: postData.htmlContent }} /> */}
+                <ReactMarkdownWithHtml className={articleStyle.articleContent} renderers={renderers} allowDangerousHtml >
+                    { postData.markdown_content }
+                </ReactMarkdownWithHtml>
             </article>
         </Layout>
     );
