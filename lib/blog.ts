@@ -3,8 +3,16 @@ import html from 'remark-html';
 
 import pool from './db';
 
-const POST_GET_ALL = { text: 'SELECT id, slug, title FROM posts WHERE published=true' };
-const POST_GET_ALL_SLUG = { text: 'SELECT slug FROM posts WHERE published=true' };
+const POST_GET_LIMIT = {
+    home: 10,
+    slugStaticPath: 100,
+};
+
+const POST_GET_ALL = {
+    text: `SELECT id, slug, title FROM posts WHERE published=true
+           ORDER BY created_at DESC LIMIT $1`
+};
+const POST_GET_ALL_SLUG = { text: 'SELECT slug FROM posts WHERE published=true ORDER BY created_at DESC LIMIT $1' };
 const POST_GET_BY_SLUG = { text: 'SELECT id, slug, title, markdown_content, to_json(created_at) as created_at FROM posts WHERE slug=$1 AND published=true' };
 
 export interface GetPostResult {
@@ -19,13 +27,13 @@ export interface PostDataResult extends GetPostResult {
     htmlContent?: string;
 }
 
-export async function getAllPosts(): Promise<GetPostResult[]> {
-    const { rows } = await pool.query(POST_GET_ALL);
+export async function getAllPosts(limit: number = POST_GET_LIMIT.home): Promise<GetPostResult[]> {
+    const { rows } = await pool.query(POST_GET_ALL, [limit]);
     return rows;
 }
 
-export async function getAllPostSlugs(): Promise<{ slug: string }[]> {
-    const { rows } = await pool.query(POST_GET_ALL_SLUG);
+export async function getAllPostSlugs(limit: number = POST_GET_LIMIT.slugStaticPath): Promise<{ slug: string }[]> {
+    const { rows } = await pool.query(POST_GET_ALL_SLUG, [limit]);
     return rows;
 }
 
