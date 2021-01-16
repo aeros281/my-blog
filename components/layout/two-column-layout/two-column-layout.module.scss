@@ -2,13 +2,13 @@ $background-color: #f8f8f8;
 
 $sidebar-width: 250px;
 $content-width: 458px;
-$breakpoint-mobile: $sidebar-width + $content-width;
 $sidebar-mobile-max-height: 150px;
 
 $blog-image-desktop-size: 6rem;
 $blog-image-mobile-size: 2rem;
 
 $page-spacing: 50px;
+$breakpoint-mobile: $sidebar-width + $content-width + 2*$page-spacing + 85px;
 
 $light-font-color: #999;
 
@@ -43,7 +43,6 @@ $light-font-color: #999;
     width: 100%;
     max-width: 1200px;
     background: white;
-    @include box-shadow();
 }
 
 .sidebar {
@@ -83,8 +82,12 @@ $light-font-color: #999;
 }
 
 @media (min-width: $breakpoint-mobile) {
+    .container {
+        @include box-shadow();
+    }
     .sidebar {
         box-shadow: 2px 0 4px rgba(0, 0, 0, 0.4);
+        z-index: 2;
 
         .navigator {
             margin-top: 150px;
@@ -97,9 +100,11 @@ $light-font-color: #999;
 @media (max-width: $breakpoint-mobile) {
     .container {
         align-content: flex-start;
+        flex-flow: column nowrap;
     }
 
     .sidebar {
+        flex: 0 auto;
         height: $sidebar-mobile-max-height;
         flex-flow: row wrap;
         margin-bottom: 20px;
@@ -118,6 +123,10 @@ $light-font-color: #999;
                 margin-left: 10px;
             }
         }
+    }
+
+    .content {
+        flex: 1 auto;
     }
 
     .blogHeader {
