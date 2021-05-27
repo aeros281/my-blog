@@ -9,7 +9,8 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { TwoColLayout as Layout } from '@components/layout';
 import Date from '@components/core/date';
 
-import { getAllPostSlugs, getPostData, PostDataResult } from '@lib/blog';
+import { getAllPostSlugs, getPostData } from '@lib/blog';
+import { PostDataResult } from '@lib/interface';
 
 import typo from '@styles/typography.module.scss';
 import articleStyle from '@styles/article.module.scss';

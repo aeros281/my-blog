@@ -1,45 +1,25 @@
 import remark from 'remark';
 import html from 'remark-html';
-
-import pool from './db';
+import { getArticleBySlug, getArticles } from './api';
+import { GetPostResult, PostDataResult } from './interface';
 
 const POST_GET_LIMIT = {
     home: 10,
     slugStaticPath: 100,
 };
 
-const POST_GET_ALL = {
-    text: `SELECT id, slug, title, to_json(created_at) as created_at_text, created_at FROM posts WHERE published=true
-           ORDER BY created_at DESC LIMIT $1`
-};
-const POST_GET_ALL_SLUG = { text: 'SELECT slug FROM posts WHERE published=true ORDER BY created_at DESC LIMIT $1' };
-const POST_GET_BY_SLUG = { text: 'SELECT id, slug, title, markdown_content, to_json(created_at) as created_at FROM posts WHERE slug=$1 AND published=true' };
-
-export interface GetPostResult {
-    id: number;
-    slug: string;
-    title: string;
-    created_at: string;
-}
-
-export interface PostDataResult extends GetPostResult {
-    markdown_content: string;
-    created_at: string;
-}
-
 export async function getAllPosts(limit: number = POST_GET_LIMIT.home): Promise<GetPostResult[]> {
-    const { rows } = await pool.query(POST_GET_ALL, [limit]);
-    return rows.map(item => Object.assign(item, { created_at: item.created_at_text }));
+    return await getArticles();
 }
 
 export async function getAllPostSlugs(limit: number = POST_GET_LIMIT.slugStaticPath): Promise<{ slug: string }[]> {
-    const { rows } = await pool.query(POST_GET_ALL_SLUG, [limit]);
-    return rows;
+    const articles = await getArticles();
+    return articles.map(item => Object.assign({}, { slug: item.slug }));
 }
 
 export async function getPostData(slug: string): Promise<PostDataResult> {
-    const { rows } = await pool.query(POST_GET_BY_SLUG, [slug]);
-    return rows[0] || {};
+    const data = await getArticleBySlug(slug, false);
+    return Object.assign({}, data, { markdown_content: data.content });
 }
 
 export async function convertRemarkToHtml(remarkContent: string): Promise<string> {

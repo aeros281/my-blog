@@ -11,25 +11,12 @@ x-common-props: &common-props
 
 services:
 
-  db:
-    image: postgres
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: example
-      PGDATA: /var/lib/postgresql/data/pgdata
-    volumes:
-      - ${PGDATA_DIR}:/var/lib/postgresql/data
-    ports:
-      - "8001:5432"
-    
   npm:
     <<: *common-props
     entrypoint: npm
 
   dev:
     <<: *common-props
-    depends_on:
-      - db
     ports:
       - "3000:3000"
     command: npm run dev
@@ -37,13 +24,12 @@ services:
   prod:
     build:
       context: ./
-      network: my-blog_default
+      network: host
       args:
       - SHARP_URL=${SHARP_URL}
-    depends_on:
-      - db
     ports:
       - "3000:3000"
+    restart: always
   
 volumes:
   node_modules:

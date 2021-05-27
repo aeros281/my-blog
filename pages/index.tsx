@@ -4,7 +4,9 @@ import Link from 'next/link';
 import { GetStaticProps } from 'next';
 
 import { BLOG_NAME, TwoColLayout as Layout } from '@components/layout';
-import { getAllPosts, GetPostResult } from '@lib/blog';
+import { getAllPosts } from '@lib/blog';
+import { GetPostResult } from '@lib/interface';
+
 import typo from '@styles/typography.module.scss';
 import Date from '@components/core/date';
 
