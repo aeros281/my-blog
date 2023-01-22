@@ -11,4 +11,16 @@
     code {
         background-color: #dfdfdf;
     }
+
+    blockquote {
+        background-color: #dfdfdf;
+        margin: 0;
+        padding: 10px 20px;
+        border-left: 8px solid grey;
+
+        & > p {
+            margin: 0;
+            padding: 0;
+        }
+    }
 }
