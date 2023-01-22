@@ -3,8 +3,9 @@ import { useRouter } from 'next/router';
 
 import { GetStaticPaths, GetStaticProps } from 'next';
 
-import ReactMarkdownWithHtml from 'react-markdown/with-html';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeHighlight from 'rehype-highlight';
 
 import { TwoColLayout as Layout } from '@components/layout';
 import Date from '@components/core/date';
@@ -15,6 +16,8 @@ import { PostDataResult } from '@lib/interface';
 import typo from '@styles/typography.module.scss';
 import articleStyle from '@styles/article.module.scss';
 import { ParsedUrlQuery } from 'querystring';
+
+import 'highlight.js/styles/github.css';
 
 interface StaticProps { postData: PostDataResult }
 interface StaticPropsParams extends ParsedUrlQuery { slug: string }
@@ -31,13 +34,6 @@ export default function Post({ postData }: { postData: PostDataResult }): React.
         );
     }
 
-    const renderers = {
-        // eslint-disable-next-line react/display-name
-        code: ({language, value}) => {
-            return <SyntaxHighlighter language={language} >{value}</SyntaxHighlighter>;
-        }
-    };
-
     return (
         <Layout home={true} >
             <Head>
@@ -48,10 +44,11 @@ export default function Post({ postData }: { postData: PostDataResult }): React.
                 <div className={`${typo.lightText} + ${typo.small}`}>
                     Created at <Date dateString={postData.created_at} />
                 </div>
-                {/* <div className={articleStyle.articleContent} dangerouslySetInnerHTML={{ __html: postData.htmlContent }} /> */}
-                <ReactMarkdownWithHtml className={articleStyle.articleContent} renderers={renderers} allowDangerousHtml >
-                    { postData.markdown_content }
-                </ReactMarkdownWithHtml>
+
+                <ReactMarkdown className={articleStyle.articleContent} remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight]}>
+                    {postData.markdown_content}
+                </ReactMarkdown>
+
             </article>
         </Layout>
     );

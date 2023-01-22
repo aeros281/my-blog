@@ -32,7 +32,7 @@ const SideBarHeader: React.FC<{ title: string, avatarSrc: string }> = ({ title, 
         <header className={style.blogHeader}>
             <h1 className={`${typoStyle.headingXl} ${style.blogTitle}`}>
                 <Link href={'/'} >
-                    <a>{ title }</a>
+                    { title }
                 </Link>
             </h1>
             <img className={`${style.headerImage} + ${utilStyle.borderCircle}`} src={avatarSrc} alt="User Avatar" />

@@ -1,3 +1,4 @@
+import React from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 
@@ -25,12 +26,12 @@ export default function Home({ posts }: HomeProps): React.ReactElement {
                     {posts.map(post => (
                         <li key={post.id} className={typo.listItem}>
                             <Link href={`/posts/${post.slug}`}>
-                                <a>
+                                <React.Fragment>
                                     {post.title}
                                     <div className={`${typo.small} ${typo.lightText}`} >
                                         <Date dateString={post.created_at} />
                                     </div>
-                                </a>
+                                </React.Fragment>
                             </Link>
                         </li>
                     ))}

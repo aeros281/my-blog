@@ -1,4 +1,4 @@
-FROM node:dubnium-alpine AS base
+FROM node:18.13.0-alpine AS base
 
 WORKDIR /base
 COPY package*.json .npmrc* ./
@@ -17,7 +17,7 @@ COPY --from=base /base ./
 
 RUN npm run build
 
-FROM node:dubnium-alpine AS production
+FROM node:18.13.0-alpine AS production
 ENV NODE_ENV=production
 WORKDIR /app
 

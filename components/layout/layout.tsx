@@ -21,7 +21,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, home = false }) => {
             <header className={style.blogHeader}>
                 <h1 className={typoStyle.heading2Xl}>
                     <Link href={'/'} >
-                        <a>{BLOG_NAME}</a>
+                        {BLOG_NAME}
                     </Link>
                 </h1>
                 <img className={`${style.headerImage} + ${utilStyle.borderCircle}`} src={AVATAR_SRC} alt="User Avatar" />
@@ -29,9 +29,9 @@ export const Layout: React.FC<LayoutProps> = ({ children, home = false }) => {
             <section>{ children }</section> 
             {home || (
                 <Link href={'/'} >
-                    <a>Back to home</a>
+                    Back to home
                 </Link>
             )}
         </div>
     );
-}
+};

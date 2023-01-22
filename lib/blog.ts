@@ -1,5 +1,3 @@
-import remark from 'remark';
-import html from 'remark-html';
 import { getArticleBySlug, getArticles } from './api';
 import { GetPostResult, PostDataResult } from './interface';
 
@@ -20,8 +18,4 @@ export async function getAllPostSlugs(limit: number = POST_GET_LIMIT.slugStaticP
 export async function getPostData(slug: string): Promise<PostDataResult> {
     const data = await getArticleBySlug(slug, false);
     return Object.assign({}, data, { markdown_content: data.content });
-}
-
-export async function convertRemarkToHtml(remarkContent: string): Promise<string> {
-    return (await remark().use(html).process(remarkContent)).toString();
 }
