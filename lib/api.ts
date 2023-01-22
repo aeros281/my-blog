@@ -1,3 +1,5 @@
+import { DEFAULT_PAGE_SIZE } from 'constants/pagination';
+
 export interface Article {
     id: number;
     title: string;
@@ -6,6 +8,16 @@ export interface Article {
     created_at: string;
     published_at: string;
 }
+
+interface PaginationOptions {
+    _limit?: number,
+    _start?: number,
+}
+
+const DEFAULT_PAGINATION_OPTIONS: PaginationOptions = {
+    _limit: DEFAULT_PAGE_SIZE,
+    _start: 0,
+};
 
 export function getStrapiURL(path: string): string {
     return `${
@@ -35,9 +47,28 @@ export async function fetchAPI(path: string, options = {}): Promise<any> {
     return data;
 }
 
-export async function getArticles(): Promise<Article[]> {
+export async function getArticleCount(): Promise<number> {
+    return fetchAPI('/articles/count').then(val => Number(val));
+}
+
+export async function getArticles(paginationOptions: PaginationOptions = {}): Promise<Article[]> {
     // Find the pages that match this slug
-    return await fetchAPI('/articles?_sort=created_at:DESC');
+    const effectivePaginationOptions: PaginationOptions = {
+        ...DEFAULT_PAGINATION_OPTIONS,
+        ...paginationOptions,
+    };
+
+    const params = {
+        '_sort': 'created_at:DESC',
+        ...Object.entries(effectivePaginationOptions)
+            // .map(([key, value]) => [`pagination[${key}]`, value])
+            .reduce((acc, [key, value]) => ({...acc, [key]: value}), {})
+    };
+    const paramStr = Object.entries(params)
+        .map(([key, value]) => `${key}=${value}`)
+        .join('&');
+
+    return fetchAPI(`/articles?${paramStr}`);
 }
 
 export async function getArticleBySlug(slug, preview): Promise<Article> {

@@ -1,51 +1,26 @@
 import React from 'react';
-import Head from 'next/head';
-import Link from 'next/link';
 
 import { GetStaticProps } from 'next';
 
-import { BLOG_NAME, TwoColLayout as Layout } from '@components/layout';
-import { getAllPosts } from '@lib/blog';
+import { getAllPosts, getPostCount } from '@lib/blog';
 import { GetPostResult } from '@lib/interface';
 
-import typo from '@styles/typography.module.scss';
-import Date from '@components/core/date';
+import ArticleListing from '@components/core/article-listing';
 
-interface HomeProps { posts: GetPostResult[] }
-interface StaticProps { posts: GetPostResult[] }
+interface HomeProps { posts: GetPostResult[], count: number }
+interface StaticProps { posts: GetPostResult[], count: number }
 
-export default function Home({ posts }: HomeProps): React.ReactElement {
-    return (
-        <Layout home>
-            <Head>
-                <title>{BLOG_NAME}</title>
-            </Head>
-            <section>
-                <h2 className={typo.headingLg}>Blog</h2>
-                <ul className={typo.list}>
-                    {posts.map(post => (
-                        <li key={post.id} className={typo.listItem}>
-                            <Link href={`/posts/${post.slug}`}>
-                                <React.Fragment>
-                                    {post.title}
-                                    <div className={`${typo.small} ${typo.lightText}`} >
-                                        <Date dateString={post.created_at} />
-                                    </div>
-                                </React.Fragment>
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
-            </section>
-        </Layout>
-    );
+export default function Home({ posts, count }: HomeProps): React.ReactElement {
+    return <ArticleListing posts={posts} count={count}></ArticleListing>;
 }
 
 export const getStaticProps: GetStaticProps<StaticProps> = async () => {
+    const postCount = await getPostCount();
     const posts = await getAllPosts();
     return {
         props: {
             posts: posts,
+            count: postCount,
         },
         revalidate: 1,
     };
